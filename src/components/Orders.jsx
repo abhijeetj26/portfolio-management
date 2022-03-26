@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import MyTitle from './MyTitle';
 import moment from 'moment';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import { alpha, FormControl, IconButton, InputLabel, MenuItem, Select, Toolbar, Tooltip, Typography } from '@mui/material';
+import { FormControl, IconButton, InputLabel, MenuItem, Select, Toolbar } from '@mui/material';
 import MyAutocomplete from './MyAutocomplete';
 
 function preventDefault(event) {
@@ -17,11 +17,17 @@ function preventDefault(event) {
 
 export default function Orders(props) {
   const [transactionType, setTransactionType] = React.useState('buy');
+  const [status, setStatus] = React.useState('submitted');
   const [showFilter, setShowFilter] = React.useState(false);
 
   const handleChange = (event) => {
     setTransactionType(event.target.value);
   };
+
+  const handleStatus = (event) => {
+    setStatus(event.target.value);
+  };
+
 
   const handleFilter = () => {
     showFilter ? setShowFilter(false) : setShowFilter(true);
@@ -57,11 +63,30 @@ export default function Orders(props) {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={transactionType}
+              sx={{ width: 100, mr: 1 }}
               label="Type"
               onChange={handleChange}
             >
               <MenuItem value={"buy"}>BUY</MenuItem>
               <MenuItem value={"sell"}>SELL</MenuItem>
+            </Select>
+          </FormControl>
+
+          <FormControl>
+            <InputLabel id="demo-simple-select-label">Status</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              sx={{ width: 150, mr: 1 }}
+              value={status}
+              label="Type"
+              onChange={handleStatus}
+            >
+              <MenuItem value={"submitted"}>Submitted</MenuItem>
+              <MenuItem value={"cancelled"}>Cancelled</MenuItem>
+              <MenuItem value={"executed"}>Executed</MenuItem>
+              <MenuItem value={"completed"}>Completed</MenuItem>
+              <MenuItem value={"failed"}>Failed</MenuItem>
             </Select>
           </FormControl>
 
