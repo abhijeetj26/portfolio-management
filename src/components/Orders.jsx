@@ -9,6 +9,7 @@ import MyTitle from './MyTitle';
 import moment from 'moment';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { alpha, IconButton, Toolbar, Tooltip, Typography } from '@mui/material';
+import MyAutocomplete from './MyAutocomplete';
 
 function preventDefault(event) {
   event.preventDefault();
@@ -27,6 +28,16 @@ export default function Orders(props) {
         <IconButton>
           <FilterListIcon />
         </IconButton>
+      </Toolbar>
+
+      <Toolbar
+        sx={{
+          pl: { sm: 2 },
+          pr: { xs: 1, sm: 1 }
+        }}
+      >
+        
+        <MyAutocomplete></MyAutocomplete>
       </Toolbar>
 
       <Table size="small">

@@ -4,6 +4,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 import { getTopMovieList } from 'services/homeService';
 import { useState } from 'react';
+import { getSummaryList } from 'services/dashboardService';
 
 
 function sleep(delay = 0) {
@@ -42,11 +43,15 @@ function MyAutocomplete() {
 
     const getList = async () => {
         try {
-            const response = await getTopMovieList();
-            if (response.topFilms) {
+            const response = await getSummaryList();
+            if (response) {
                 (async () => {
                     await sleep(1e3); // For demo purposes.
-                    setOptions(response.topFilms);
+                    let refNoList = response.map((item) => {
+                        return item.orderRefNo.toString();
+                    });
+                    console.log(refNoList);
+                    setOptions(refNoList);
                 })();
             }
         } catch (error) {
@@ -66,13 +71,13 @@ function MyAutocomplete() {
                 setOpen(false);
             }}
             isOptionEqualToValue={(option, value) => option.title === value.title}
-            getOptionLabel={(option) => option.title}
+            getOptionLabel={(option) => option}
             options={options}
             loading={loading}
             renderInput={(params) => (
                 <TextField
                     {...params}
-                    label="Movies"
+                    label="Order Ref No"
                     InputProps={{
                         ...params.InputProps,
                         endAdornment: (
