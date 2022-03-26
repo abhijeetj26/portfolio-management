@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import MyTitle from './MyTitle';
 import moment from 'moment';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import { FormControl, IconButton, InputLabel, MenuItem, Select, TablePagination, Toolbar } from '@mui/material';
+import { Button, FormControl, IconButton, InputLabel, MenuItem, Select, TablePagination, Toolbar } from '@mui/material';
 import MyAutocomplete from './MyAutocomplete';
 
 function preventDefault(event) {
@@ -103,6 +103,7 @@ export default function Orders(props) {
             </Select>
           </FormControl>
 
+          <Button variant="outlined">Filter</Button>
         </Toolbar>
       )}
 
