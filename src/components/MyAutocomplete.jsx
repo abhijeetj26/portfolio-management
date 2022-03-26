@@ -2,7 +2,6 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
-import { getTopMovieList } from 'services/homeService';
 import { useState } from 'react';
 import { getSummaryList } from 'services/dashboardService';
 

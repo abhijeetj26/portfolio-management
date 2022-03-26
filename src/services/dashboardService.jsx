@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const BASEURL = "https://623e84d1e8fbc4f1626fddd0.mockapi.io/";
+const baseUrl = process.env.REACT_APP_API_ENDPOINT;
 
 const getSummaryList = async () => {
-    const api = BASEURL + "summary";
+    const api = baseUrl + "/summary";
     const res = await axios.get(api);
     return res.data;
 };
