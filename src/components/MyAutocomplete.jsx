@@ -62,7 +62,7 @@ function MyAutocomplete(props) {
 
     return (
         <Autocomplete
-            id="asynchronous-demo"
+            id="asynchronousDemo"
             sx={{ width: 150, pr: 1 }}
             open={open}
             onOpen={() => {
