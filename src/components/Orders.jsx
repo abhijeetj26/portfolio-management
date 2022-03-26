@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import MyTitle from './MyTitle';
 import moment from 'moment';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import { alpha, IconButton, Toolbar, Tooltip, Typography } from '@mui/material';
+import { alpha, FormControl, IconButton, InputLabel, MenuItem, Select, Toolbar, Tooltip, Typography } from '@mui/material';
 import MyAutocomplete from './MyAutocomplete';
 
 function preventDefault(event) {
@@ -16,6 +16,17 @@ function preventDefault(event) {
 }
 
 export default function Orders(props) {
+  const [transactionType, setTransactionType] = React.useState('buy');
+  const [showFilter, setShowFilter] = React.useState(false);
+
+  const handleChange = (event) => {
+    setTransactionType(event.target.value);
+  };
+
+  const handleFilter = () => {
+    showFilter ? setShowFilter(false) : setShowFilter(true);
+  }
+
   return (
     <>
       <Toolbar
@@ -25,20 +36,37 @@ export default function Orders(props) {
         }}
       >
         <MyTitle>Summary</MyTitle>
-        <IconButton>
+        <IconButton onClick={handleFilter}>
           <FilterListIcon />
         </IconButton>
       </Toolbar>
 
-      <Toolbar
-        sx={{
-          pl: { sm: 2 },
-          pr: { xs: 1, sm: 1 }
-        }}
-      >
-        
-        <MyAutocomplete></MyAutocomplete>
-      </Toolbar>
+      {showFilter && (
+        <Toolbar
+          sx={{
+            pl: { sm: 2 },
+            pr: { xs: 1, sm: 1 }
+          }}
+        >
+          <MyAutocomplete type="orderRefNo"></MyAutocomplete>
+          <MyAutocomplete type="fundName"></MyAutocomplete>
+
+          <FormControl>
+            <InputLabel id="demo-simple-select-label">Type</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={transactionType}
+              label="Type"
+              onChange={handleChange}
+            >
+              <MenuItem value={"buy"}>BUY</MenuItem>
+              <MenuItem value={"sell"}>SELL</MenuItem>
+            </Select>
+          </FormControl>
+
+        </Toolbar>
+      )}
 
       <Table size="small">
         <TableHead>

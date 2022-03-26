@@ -13,10 +13,13 @@ function sleep(delay = 0) {
     });
 }
 
-function MyAutocomplete() {
+function MyAutocomplete(props) {
     const [open, setOpen] = useState(false);
     const [options, setOptions] = useState([]);
+
     const loading = open && options.length === 0;
+
+    const autoCompleteType = props.type === "orderRefNo" ? "orderRefNo" : props.type === "fundName" ? "fundName " : "";
 
     React.useEffect(() => {
         let active = true;
@@ -48,9 +51,8 @@ function MyAutocomplete() {
                 (async () => {
                     await sleep(1e3); // For demo purposes.
                     let refNoList = response.map((item) => {
-                        return item.orderRefNo.toString();
+                        return item[autoCompleteType.trim()];
                     });
-                    console.log(refNoList);
                     setOptions(refNoList);
                 })();
             }
@@ -77,7 +79,7 @@ function MyAutocomplete() {
             renderInput={(params) => (
                 <TextField
                     {...params}
-                    label="Order Ref No"
+                    label={autoCompleteType === "orderRefNo" ? "Order Ref No" : "Fund Name"}
                     InputProps={{
                         ...params.InputProps,
                         endAdornment: (
