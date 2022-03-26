@@ -21,6 +21,8 @@ import { mainListItems } from 'components/listItems';
 import Chart from 'components/Chart';
 import Deposits from 'components/Deposits';
 import Orders from 'components/Orders';
+import { getSummaryList } from 'services/dashboardService';
+import { useEffect, useState } from 'react';
 
 
 const drawerWidth = 240;
@@ -72,9 +74,29 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 
 function DashboardContent() {
-    const [open, setOpen] = React.useState(true);
+
+    const [open, setOpen] = useState(true);
+    const [summary, setSummary] = useState([]);
+
+    useEffect(() => {
+        summaryList();
+    }, []);
+
+
     const toggleDrawer = () => {
         setOpen(!open);
+    };
+
+    const summaryList = async () => {
+        try {
+            const response = await getSummaryList();
+            if (response) {
+                setSummary(response);
+                console.log("response", response);
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -178,7 +200,7 @@ function DashboardContent() {
                         {/* Recent Orders */}
                         <Grid item xs={12}>
                             <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                <Orders />
+                                <Orders summaryList={summary} />
                             </Paper>
                         </Grid>
                     </Grid>
