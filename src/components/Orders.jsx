@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import MyTitle from './MyTitle';
 import moment from 'moment';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import { FormControl, IconButton, InputLabel, MenuItem, Select, Toolbar } from '@mui/material';
+import { FormControl, IconButton, InputLabel, MenuItem, Select, TablePagination, Toolbar } from '@mui/material';
 import MyAutocomplete from './MyAutocomplete';
 
 function preventDefault(event) {
@@ -19,6 +19,19 @@ export default function Orders(props) {
   const [transactionType, setTransactionType] = React.useState('buy');
   const [status, setStatus] = React.useState('submitted');
   const [showFilter, setShowFilter] = React.useState(false);
+
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
 
   const handleChange = (event) => {
     setTransactionType(event.target.value);
@@ -105,20 +118,34 @@ export default function Orders(props) {
             <TableCell align="right">Running Balance</TableCell>
           </TableRow>
         </TableHead>
+
         <TableBody>
-          {props.summaryList.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{moment(row.orderDate).format('DD/MM/YYYY')}</TableCell>
-              <TableCell>{row.orderRefNo}</TableCell>
-              <TableCell>{row.fundName}</TableCell>
-              <TableCell>{row.transactionType ? "SELL" : "BUY"}</TableCell>
-              <TableCell>{`$${row.credit}`}</TableCell>
-              <TableCell>{`$${row.debit}`}</TableCell>
-              <TableCell align="right">{`$${row.runningBalance}`}</TableCell>
-            </TableRow>
-          ))}
+          {props.summaryList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((row) => {
+              return (
+                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                  <TableCell>{moment(row.orderDate).format('DD/MM/YYYY')}</TableCell>
+                  <TableCell>{row.orderRefNo}</TableCell>
+                  <TableCell>{row.fundName}</TableCell>
+                  <TableCell>{row.transactionType ? "SELL" : "BUY"}</TableCell>
+                  <TableCell>{`$${row.credit}`}</TableCell>
+                  <TableCell>{`$${row.debit}`}</TableCell>
+                  <TableCell align="right">{`$${row.runningBalance}`}</TableCell>
+                </TableRow>
+              );
+            })}
         </TableBody>
+
       </Table>
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component="div"
+        count={props.summaryList.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
       <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
         See more summary
       </Link>
